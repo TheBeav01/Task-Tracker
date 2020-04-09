@@ -26,9 +26,7 @@ public class NewTaskScreen extends Screen {
 
     @Override
     protected void init() {
-        System.out.println("INIT --> W= " + width + " H= " + height);
-        //TODO: Embiggen to 20x20
-        toggleModes = new TaskButton(50,50,10,10,modeText,buttons -> {
+        toggleModes = new TaskButton(50,50,20,20,modeText,buttons -> {
             //TODO: Refactor into dedicated function and set appropriate flags usable elsewhere
             switch(modeText) {
                 case "M":
@@ -82,6 +80,7 @@ public class NewTaskScreen extends Screen {
 
     private void test() {
         TasksLogger.log("Selected button");
+        GUIUtils.getItemStack("Dirt");
     }
     private void close() {
         Minecraft.getInstance().displayGuiScreen(null);
