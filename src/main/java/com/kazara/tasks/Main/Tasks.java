@@ -1,9 +1,11 @@
 package com.kazara.tasks.Main;
 
 import com.kazara.tasks.Event.EventHandlers;
+import com.kazara.tasks.Registry.Registries;
 import com.kazara.tasks.Utils.TasksLogger;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -15,9 +17,13 @@ import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.IForgeRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 // The value here should match an entry in the META-INF/mods.toml file
@@ -26,7 +32,7 @@ public class Tasks
 {
     // Directly reference a log4j logger.
     private static final Logger LOGGER = LogManager.getLogger();
-
+    private TasksModInstance instance;
     public Tasks() {
         TasksLogger.registerLogger(LOGGER);
 
@@ -41,7 +47,7 @@ public class Tasks
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
-        TasksModInstance instance = new TasksModInstance();
+        instance = new TasksModInstance();
         instance.registerEvents();
         instance.registerKeys();
     }
@@ -49,9 +55,13 @@ public class Tasks
     private void setup(final FMLCommonSetupEvent event)
     {
         // some preinit code
-        LOGGER.info("HELLO FROM PREINIT");
-        LOGGER.info("DIRT BLOCK >> {}", Blocks.DIRT.getRegistryName());
-        TasksLogger.log("uwu");
+        LOGGER.info("Beginning pre-init");
+        Registries.setRegistries();
+        if(instance != null) {
+            LOGGER.info("Building tree");
+            instance.buildTree();
+            LOGGER.info("Built tree");
+        }
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {
