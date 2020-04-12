@@ -2,6 +2,7 @@ package com.kazara.tasks.Main;
 
 import com.kazara.tasks.Event.EventHandlers;
 import com.kazara.tasks.Event.KeypressHandler;
+import com.kazara.tasks.Recipes.TasksRecipeList;
 import com.kazara.tasks.Registry.Keybinds;
 import com.kazara.tasks.Registry.Registries;
 import com.kazara.tasks.Utils.SearchTree.SearchTree;
@@ -16,11 +17,19 @@ import java.util.ArrayList;
 public class TasksModInstance {
     public static Minecraft minecraft;
     public static SearchTree currentTree;
-
+    public static RecipeManager recipeManager;
+    public TasksRecipeList recipeList;
     public TasksModInstance() {
         minecraft = Minecraft.getInstance();
         currentTree = new SearchTree();
     }
+
+    public static void addRecipeManager(RecipeManager rm) {
+        if(recipeManager == null) {
+            recipeManager = rm;
+        }
+    }
+
     public void registerEvents() {
         MinecraftForge.EVENT_BUS.register(new EventHandlers());
         MinecraftForge.EVENT_BUS.register(new KeypressHandler());
@@ -41,5 +50,9 @@ public class TasksModInstance {
         time = System.currentTimeMillis() - start;
         TasksLogger.log("Lookup took " + time + "ms ");
         TasksLogger.log("uwu");
+    }
+
+    public void getRecipes() {
+        TasksRecipeList.get();
     }
 }

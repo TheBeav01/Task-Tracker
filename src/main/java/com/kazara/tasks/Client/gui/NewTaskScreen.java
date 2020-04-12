@@ -1,15 +1,11 @@
 package com.kazara.tasks.Client.gui;
 
 import com.kazara.tasks.Utils.TasksLogger;
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.gui.widget.list.OptionsRowList;
 import net.minecraft.util.text.StringTextComponent;
-
-import static net.minecrell.terminalconsole.TerminalConsoleAppender.close;
 
 //TODO: Actually render things
 //TODO: Dim the background
@@ -80,7 +76,7 @@ public class NewTaskScreen extends Screen {
 
     private void test() {
         TasksLogger.log("Selected button");
-        GUIUtils.getItemStack("Dirt");
+        GUIUtils.getRecipe("Dirt");
     }
     private void close() {
         Minecraft.getInstance().displayGuiScreen(null);
