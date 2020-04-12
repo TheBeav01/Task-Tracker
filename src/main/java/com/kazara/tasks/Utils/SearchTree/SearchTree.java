@@ -1,5 +1,6 @@
 package com.kazara.tasks.Utils.SearchTree;
 
+import com.kazara.tasks.Utils.TasksLogger;
 import net.minecraft.util.ResourceLocation;
 
 import java.util.ArrayList;
@@ -54,7 +55,7 @@ public class SearchTree {
 
     public Node searchTreeForNode(String key) {
         String lowerKey = key.toLowerCase();
-        System.out.println("Performing search on " + key);
+        TasksLogger.log("Performing search on " + key);
         Node cur = root;
         int numMatches = 0;
         for(int l = 0; l < key.length(); l++) {
@@ -65,7 +66,7 @@ public class SearchTree {
             }
             else {
                 if(numMatches == 0) {
-                    System.out.println("No matches found for: " + key);
+                    TasksLogger.log("No matches found for: " + key);
                     return new Node();
                 }
                 return cur;
@@ -83,7 +84,7 @@ public class SearchTree {
             Node n = nodesToTraverse.pop();
             Set<Edge> edges = n.getEdgeSet();
             if(n.isEndOfWord()) {
-                System.out.println(n.getFullName());
+                TasksLogger.log(n.getFullName());
             }
             for (Edge edge : edges) {
                 nodesToTraverse.push(edge.getChild());

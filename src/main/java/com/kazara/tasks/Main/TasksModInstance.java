@@ -7,13 +7,16 @@ import com.kazara.tasks.Registry.Registries;
 import com.kazara.tasks.Utils.SearchTree.SearchTree;
 import com.kazara.tasks.Utils.TasksLogger;
 import net.minecraft.client.Minecraft;
+import net.minecraft.item.crafting.RecipeManager;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.ArrayList;
 
 public class TasksModInstance {
     public static Minecraft minecraft;
     public static SearchTree currentTree;
+
     public TasksModInstance() {
         minecraft = Minecraft.getInstance();
         currentTree = new SearchTree();
