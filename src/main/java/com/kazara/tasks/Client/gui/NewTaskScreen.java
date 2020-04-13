@@ -1,84 +1,135 @@
 package com.kazara.tasks.Client.gui;
 
+import com.google.common.collect.Lists;
+import com.kazara.tasks.Main.TasksModInstance;
+import com.kazara.tasks.Recipes.TasksRecipeList;
 import com.kazara.tasks.Utils.TasksLogger;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.IGuiEventListener;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.gui.widget.list.OptionsRowList;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextComponent;
+
+import java.awt.*;
+import java.util.List;
 
 //TODO: Actually render things
-//TODO: Dim the background
 public class NewTaskScreen extends Screen {
     private TaskButton toggleModes;
-    private OptionsRowList list;
-    private TextFieldWidget textFieldWidget;
+    private TaskEntitySelectorField textFieldWidget;
+    private TextFieldWidget multSelector;
+    private TextComponent title;
     private String modeText;
+    private FontRenderer mcFontRenderer;
+    int BX, BY, BW, BH;
+    float BXf, BYf;
+    private ModState GUI_STATE;
+    private final List<IGuiEventListener> children = Lists.newArrayList();
     public NewTaskScreen() {
         super(new StringTextComponent("AAA"));
-        modeText = "M";
 
+        modeText = StringConstants.CREATE;
+        GUI_STATE = ModState.CRAFT;
     }
 
     @Override
     protected void init() {
-        toggleModes = new TaskButton(50,50,20,20,modeText,buttons -> {
-            //TODO: Refactor into dedicated function and set appropriate flags usable elsewhere
-            switch(modeText) {
-                case "M":
-                    modeText = "G";
-                    System.out.println("M -> G");
-                    this.toggleModes.setMessage(modeText); //Thanks, Vanilla :3
+        BX = width/2;
+        BY = height/2;
+        BXf = BX;
+        BYf = BY;
+        BW = 80;
+        BH = 20;
+        mcFontRenderer = TasksModInstance.minecraft.fontRenderer;
+        setupText();
+        setupButtons();
 
-                    break;
-                case "G":
-                    modeText = "K";
-                    System.out.println("G -> K");
-                    this.toggleModes.setMessage(modeText);
-
-                    break;
-                case "K":
-                    modeText = "M";
-                    System.out.println("K -> M");
-                    this.toggleModes.setMessage(modeText);
-
-                    break;
-
-            }
-        });
         //TODO: Create text entry and text field.
         super.init();
     }
 
+    private void setupButtons() {
+        toggleModes = new TaskButton(BX-40,BY,BW,BH,modeText,buttons -> {
+            //TODO: Refactor into dedicated function and set appropriate flags usable elsewhere
+            switch(GUI_STATE) {
+                case CRAFT:
+                    modeText = StringConstants.GATHER;
+                    GUI_STATE = ModState.GATHER;
+                    break;
+                case GATHER:
+                    modeText = StringConstants.TARGET;
+                    GUI_STATE = ModState.TARGET;
+                    break;
+                case TARGET:
+                    modeText = StringConstants.CREATE;
+                    GUI_STATE = ModState.CRAFT;
+                    break;
+            }
+            this.toggleModes.setMessage(modeText); //Thanks, Vanilla :3
+        });
+    }
+
+    private void setupText() {
+        children.clear();
+
+        textFieldWidget = new TaskEntitySelectorField(this,mcFontRenderer,BX-160,BY-40,BW*2,BH,"");
+        multSelector = new TextFieldWidget(mcFontRenderer,BX+20,BY-40,BW/2,BH,"");
+        children.add(textFieldWidget);
+        children.add(multSelector);
+
+    }
+
     @Override
     public void render(int p_render_1_, int p_render_2_, float p_render_3_) {
+        /*TODO: Create two buttons, two text fields, and one dropdown.
+        One button cancels the gui [DONE].
+        One button creates a new task [DONE]. One button selects the type [DONE].
+        One text field handles the multiplier [WIP]
+        */
+
+        renderBackground();
         renderText();
         renderButtons();
-        renderBackground();
+
+        textFieldWidget.render(p_render_1_, p_render_2_, p_render_3_);
+//        multSelector.render(p_render_1_, p_render_2_, p_render_3_);
+        TasksModInstance.minecraft.keyboardListener.enableRepeatEvents(true);
+
+        textFieldWidget.writeText("");
+//        focusEntry();
         super.render(p_render_1_, p_render_2_, p_render_3_);
     }
+
     private void renderText() {
+        if(mcFontRenderer != null) {
+            mcFontRenderer.drawStringWithShadow("Create a new task",BXf,BYf/4,0xFFFFFF);
+        }
+
     }
     private void renderButtons() {
-        /*TODO: Create two buttons, two text fields, and one dropdown. One button cancels the gui.
-        One button creates a new task. The dropdown selects the type. The text field denotes task name. A second button toggles
-        kill -> gather -> make, setting the appropriate flags
-        */
-        addButton(new TaskButton(width/2-160,height/2,80,20,"Create",buttons -> test()));
-        addButton(new TaskButton(width/2 + 80, height/2,80,20,"Close",buttons -> close()));
+
+        addButton(new TaskButton(BX-160,BY,BW,BH,"Create",buttons -> test()));
+        addButton(new TaskButton(BX+80, BY,BW,BH,"Close",buttons -> close()));
         addButton(toggleModes);
     }
 
     @Override
-    public boolean shouldCloseOnEsc() {
-        return true;
+    public void tick() {
+        textFieldWidget.tick();
+        multSelector.tick();
     }
-
     private void test() {
         TasksLogger.log("Selected button");
-        GUIUtils.getRecipe("Dirt");
+        TasksRecipeList.getIngredientsFromItemName("dirt"); //Stub. Replace with selected item.
     }
     private void close() {
         Minecraft.getInstance().displayGuiScreen(null);
+    }
+
+    @Override
+    public void onClose() {
+        minecraft.keyboardListener.enableRepeatEvents(false);
     }
 }

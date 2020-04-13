@@ -1,5 +1,6 @@
 package com.kazara.tasks.Main;
 
+import com.kazara.tasks.Client.gui.ModState;
 import com.kazara.tasks.Event.EventHandlers;
 import com.kazara.tasks.Event.KeypressHandler;
 import com.kazara.tasks.Recipes.TasksRecipeList;
@@ -10,9 +11,6 @@ import com.kazara.tasks.Utils.TasksLogger;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.crafting.RecipeManager;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.registries.ForgeRegistries;
-
-import java.util.ArrayList;
 
 public class TasksModInstance {
     public static Minecraft minecraft;
