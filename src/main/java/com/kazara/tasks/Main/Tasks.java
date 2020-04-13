@@ -1,5 +1,6 @@
 package com.kazara.tasks.Main;
 
+import com.kazara.tasks.Recipes.TasksRecipeList;
 import com.kazara.tasks.Registry.Registries;
 import com.kazara.tasks.Utils.TasksLogger;
 import net.minecraft.block.Block;
@@ -54,10 +55,7 @@ public class Tasks
         LOGGER.info("Beginning pre-init");
         Registries.setRegistries();
         if(instance != null) {
-            LOGGER.info("Setting recipes");
-            LOGGER.info("Building tree");
             instance.buildTree();
-            LOGGER.info("Built tree");
         }
     }
 
@@ -65,7 +63,6 @@ public class Tasks
         // do something that can only be done on the client
         LOGGER.info("Got game settings {}", event.getMinecraftSupplier().get().gameSettings);
         instance.registerKeys();
-        instance.getRecipes();
         LOGGER.info("Finished mod setup");
 
     }

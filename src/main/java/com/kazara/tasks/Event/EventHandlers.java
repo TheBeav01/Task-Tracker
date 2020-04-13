@@ -1,6 +1,7 @@
 package com.kazara.tasks.Event;
 
 import com.kazara.tasks.Main.TasksModInstance;
+import com.kazara.tasks.Recipes.TasksRecipeList;
 import com.kazara.tasks.Utils.TasksLogger;
 import javafx.concurrent.Task;
 import net.minecraft.client.Minecraft;
@@ -15,6 +16,7 @@ public class EventHandlers {
     public void onWorldJoin(PlayerEvent.PlayerLoggedInEvent event) {
         TasksLogger.log(event.getPlayer().getGameProfile().getName() + " logged in.");
         TasksModInstance.addRecipeManager(event.getPlayer().world.getRecipeManager());
+        TasksRecipeList.setupRecipeList();
         //TODO: Load tasks
     }
 

@@ -25,6 +25,9 @@ public class TasksModInstance {
     }
 
     public static void addRecipeManager(RecipeManager rm) {
+        if(rm == null) {
+            System.out.println("Uhhhhhhhhhh the manager is null.");
+        }
         if(recipeManager == null) {
             recipeManager = rm;
         }
@@ -39,6 +42,7 @@ public class TasksModInstance {
     }
 
     public void buildTree() {
+        TasksLogger.log("Building tree");
         long start = System.currentTimeMillis();
         currentTree.buildTree(Registries.blocks, Registries.items);
         long time = System.currentTimeMillis() - start;
@@ -49,10 +53,5 @@ public class TasksModInstance {
         currentTree.printKeyset("stripped");
         time = System.currentTimeMillis() - start;
         TasksLogger.log("Lookup took " + time + "ms ");
-        TasksLogger.log("uwu");
-    }
-
-    public void getRecipes() {
-        TasksRecipeList.get();
     }
 }
