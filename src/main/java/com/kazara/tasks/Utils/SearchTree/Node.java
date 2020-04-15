@@ -1,5 +1,10 @@
 package com.kazara.tasks.Utils.SearchTree;
 
+import com.kazara.tasks.Utils.RecipeUtils;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.util.ResourceLocation;
+
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -7,6 +12,7 @@ public class Node {
     private Set<Edge> edgeSet;
     private boolean endOfWord = false;
     private String name, domain;
+    private ResourceLocation resourceLocation;
     public Node() {
         edgeSet = new TreeSet<Edge>();
     }
@@ -75,6 +81,7 @@ public class Node {
     public void setNames(String name, String domain) {
         this.name = name;
         this.domain = domain;
+        this.resourceLocation = new ResourceLocation(domain,name);
     }
 
     public String getName() {
@@ -84,4 +91,5 @@ public class Node {
     public String getFullName() {
         return domain + ":" + name;
     }
+
 }

@@ -38,7 +38,6 @@ public class SearchTree {
                             Node child = cachedEdge.getChild();
                             child.toggleEndOfWord();
                             child.setNames(splitDom[1], splitDom[0]);
-
                         }
                     }
                     cur = cur.getNextNode(c);

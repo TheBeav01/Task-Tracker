@@ -3,6 +3,7 @@ package com.kazara.tasks.Client.gui;
 import com.google.common.collect.Lists;
 import com.kazara.tasks.Main.TasksModInstance;
 import com.kazara.tasks.Recipes.TasksRecipeList;
+import com.kazara.tasks.Utils.RecipeUtils;
 import com.kazara.tasks.Utils.TasksLogger;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -12,7 +13,6 @@ import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextComponent;
 
-import java.awt.*;
 import java.util.List;
 
 //TODO: Actually render things
@@ -98,8 +98,13 @@ public class NewTaskScreen extends Screen {
         TasksModInstance.minecraft.keyboardListener.enableRepeatEvents(true);
 
         textFieldWidget.writeText("");
-//        focusEntry();
+        focusEntry();
         super.render(p_render_1_, p_render_2_, p_render_3_);
+    }
+
+    private void focusEntry() {
+        textFieldWidget.setFocused2(true);
+        setFocused(textFieldWidget);
     }
 
     private void renderText() {
@@ -122,7 +127,7 @@ public class NewTaskScreen extends Screen {
     }
     private void test() {
         TasksLogger.log("Selected button");
-        TasksRecipeList.getIngredientsFromItemName("dirt"); //Stub. Replace with selected item.
+//        RecipeUtils.getIngredientsFromItemName("planks"); //Stub. Replace with selected item.
     }
     private void close() {
         Minecraft.getInstance().displayGuiScreen(null);
