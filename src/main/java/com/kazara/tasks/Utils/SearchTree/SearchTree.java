@@ -8,6 +8,8 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 import java.util.regex.Pattern;
@@ -16,6 +18,7 @@ public class SearchTree {
     private Node root;
     private Set<Edge> edgeSet;
     private int numEntries;
+    private Logger LOGGER = LogManager.getLogger();
     public SearchTree() {
         root = new Node();
         edgeSet = new TreeSet<Edge>();
@@ -54,6 +57,25 @@ public class SearchTree {
                             child.setNames(splitDom[1], splitDom[0]);
                             child.setIngredients(ig);
                         }
+                    }
+                    else {
+                        Edge edge = cur.getEdge(c);
+                        if(edge != null) {
+                            if( l == str.length() - 1 && !edge.getChild().isEndOfWord()) {
+                                LOGGER.debug("Potentially set end of word for " + str);
+                                Node n = edge.getChild();
+                                n.toggleEndOfWord();
+                                n.setNames(splitDom[1], splitDom[0]);
+                                n.setIngredients(ig);
+                            }
+                        }
+//                        if(!cur.isEndOfWord() && l == str.length() - 1) {
+//                            LOGGER.debug("Potentially set end of word for " + str);
+//
+//                            cur.toggleEndOfWord();
+//                            cur.setNames(splitDom[1], splitDom[0]);
+//                            cur.setIngredients(ig);
+//                        }
                     }
                     cur = cur.getNextNode(c);
                 }
