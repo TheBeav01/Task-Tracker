@@ -4,7 +4,6 @@ import com.kazara.tasks.Client.gui.Dropdown.DropdownItem;
 import com.kazara.tasks.Recipes.TasksRecipeList;
 import javafx.scene.input.KeyCode;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 
 public class TaskEntitySelectorField extends TextFieldWidget {
@@ -25,7 +24,6 @@ public class TaskEntitySelectorField extends TextFieldWidget {
         if(p_223281_1_ == 259 && isSuccesful) {
             //Update search
             i = new DropdownItem().build(this.getText(),true);
-            System.out.println("A");
 
         }
 //

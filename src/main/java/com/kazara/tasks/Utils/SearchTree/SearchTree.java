@@ -1,8 +1,8 @@
 package com.kazara.tasks.Utils.SearchTree;
 
+import com.kazara.tasks.Utils.ItemStackWrapper;
 import com.kazara.tasks.Utils.RecipeUtils;
 import com.kazara.tasks.Utils.TasksLogger;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
@@ -38,10 +38,8 @@ public class SearchTree {
                 cur = root;
                 splitDom = pattern.split(fullStr.toString(), 2);
                 String str = splitDom[1];
-//                recList = RecipeUtils.getRecipesFromItemName(str);
                 recList = RecipeUtils.getRecipesFromExactItemName(str);
                 if(!recList.isEmpty()) {
-                    System.out.println("BEGIN SINGLE FROM BLOCK/ITEM " + fullStr);
                     for (IRecipe<?> iRecipe : recList) {
                         ig = iRecipe.getIngredients();
                     }
@@ -116,22 +114,49 @@ public class SearchTree {
         return numEntries;
     }
     //Just a test
-    public Set<ItemStack> getComponentItemsFromTree(String name) {
+    public ArrayList<ItemStackWrapper> getComponentItemsFromTree(String name) {
+        ArrayList<ItemStackWrapper> ret = new ArrayList<>();
         Node node = searchTreeForNode(name);
         List<Ingredient> ingList = node.getIngredients();
         if(ingList == null || ingList.size() == 0) {
-            return new TreeSet<>();
+            return new ArrayList<>();
         }
-        Stack<ItemStack> toSearch = new Stack<>();
-        ItemStack[] stacks = ingList.get(0).getMatchingStacks();
+        Stack<List<Ingredient>> toSearch = new Stack<>();
+        toSearch.push(ingList);
+        while (!toSearch.isEmpty()) {
+            ingList = toSearch.pop();
+            for (Ingredient ingredient : ingList) {
+                ItemStack[] itemStacks = ingredient.getMatchingStacks();
+                for (ItemStack itemStack : itemStacks) {
+                    ItemStackWrapper it = new ItemStackWrapper(itemStack);
+                    int idx = ret.indexOf(it);
 
-        for (ItemStack stack : stacks) {
-            toSearch.push(stack);
-        }
-        while(!toSearch.isEmpty()) {
-            ItemStack st = toSearch.pop();
-        }
+                    if(idx >= 0) {
+                        it = ret.get(idx);
+                        int cnt = it.getCount();
+                        it.setCount(++cnt);
+                    }
+                    else {
+                        //Search for a node?
+                        if(itemStacks.length > 1) {
+                            it.setDict();
+                        }
+                        Node tmp = searchTreeForNode(it.getRegistryName());
+                        if(tmp.isEndOfWord()) {
+//                            toSearch.push();
+                            System.out.println("Iterate on " + it.getRegistryName());
+                        }
+                        else {
+                            System.out.println("Uh.");
+                        }
+                        ret.add(it);
 
+                    }
+
+                }
+            }
+        }
         return null;
     }
+
 }

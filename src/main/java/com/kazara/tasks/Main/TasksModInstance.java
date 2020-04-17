@@ -23,9 +23,6 @@ public class TasksModInstance {
     }
 
     public static void addRecipeManager(RecipeManager rm) {
-        if(rm == null) {
-            System.out.println("Uhhhhhhhhhh the manager is null.");
-        }
         if(recipeManager == null) {
             recipeManager = rm;
         }
@@ -46,5 +43,9 @@ public class TasksModInstance {
         long time = System.currentTimeMillis() - start;
         TasksLogger.log("Finished building tree. It took " + time  +"ms to build with " + currentTree.getNumEntries() +
                 " entries");
+    }
+
+    public SearchTree getSearchTree() {
+        return currentTree;
     }
 }

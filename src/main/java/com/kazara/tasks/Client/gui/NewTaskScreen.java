@@ -1,6 +1,7 @@
 package com.kazara.tasks.Client.gui;
 
 import com.google.common.collect.Lists;
+import com.kazara.tasks.Main.Tasks;
 import com.kazara.tasks.Main.TasksModInstance;
 import com.kazara.tasks.Recipes.TasksRecipeList;
 import com.kazara.tasks.Utils.RecipeUtils;
@@ -26,12 +27,14 @@ public class NewTaskScreen extends Screen {
     int BX, BY, BW, BH;
     float BXf, BYf;
     private ModState GUI_STATE;
+    private TasksModInstance instance;
     private final List<IGuiEventListener> children = Lists.newArrayList();
     public NewTaskScreen() {
         super(new StringTextComponent("AAA"));
 
         modeText = StringConstants.CREATE;
         GUI_STATE = ModState.CRAFT;
+        instance = Tasks.getInstance();
     }
 
     @Override
@@ -127,6 +130,7 @@ public class NewTaskScreen extends Screen {
     }
     private void test() {
         TasksLogger.log("Selected button");
+        instance.getSearchTree().getComponentItemsFromTree("bookshelf");
 //        RecipeUtils.getIngredientsFromItemName("planks"); //Stub. Replace with selected item.
     }
     private void close() {

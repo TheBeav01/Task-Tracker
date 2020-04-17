@@ -100,19 +100,18 @@ public class Node {
 
     public void setIngredients(NonNullList<Ingredient> ig) {
         this.ingredients = ig;
-        setDictionaryFromIngredients();
     }
-
-    public void setDictionaryFromIngredients() {
-        ItemStack[] list;
-        for (Ingredient ingredient : ingredients) {
-            list = ingredient.getMatchingStacks();
-            if(list.length > 1) {
-                hasDictionaryItems = true;
-                break;
-            }
-        }
-    }
+//
+//    public void setDictionaryFromIngredients() {
+//        ItemStack[] list;
+//        for (Ingredient ingredient : ingredients) {
+//            list = ingredient.getMatchingStacks();
+//            if(list.length > 1) {
+//                hasDictionaryItems = true;
+//                break;
+//            }
+//        }
+//    }
 
     public List<Ingredient> getIngredients() {
         return ingredients;
