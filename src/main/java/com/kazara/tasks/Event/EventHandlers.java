@@ -1,5 +1,6 @@
 package com.kazara.tasks.Event;
 
+import com.kazara.tasks.Main.Tasks;
 import com.kazara.tasks.Main.TasksModInstance;
 import com.kazara.tasks.Recipes.TasksRecipeList;
 import com.kazara.tasks.Utils.RecipeUtils;
@@ -18,6 +19,10 @@ public class EventHandlers {
         TasksLogger.log(event.getPlayer().getGameProfile().getName() + " logged in.");
         TasksModInstance.addRecipeManager(event.getPlayer().world.getRecipeManager());
         RecipeUtils.setupRecipeList();
+        TasksModInstance inst = Tasks.getInstance();
+        if(Tasks.getInstance() != null) {
+            inst.buildTree();
+        }
         //TODO: Load tasks
     }
 

@@ -1,12 +1,14 @@
 package com.kazara.tasks.Utils.SearchTree;
 
+import com.kazara.tasks.Utils.RecipeUtils;
 import com.kazara.tasks.Utils.TasksLogger;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 
-import java.util.ArrayList;
-import java.util.Set;
-import java.util.Stack;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.regex.Pattern;
 
 public class SearchTree {
@@ -24,12 +26,25 @@ public class SearchTree {
         Edge cachedEdge;
         Pattern pattern = Pattern.compile(":");
         String splitDom[];
+        List<IRecipe<?>> recList;
+        NonNullList<Ingredient> ig = NonNullList.create();
+        HashMap<String, NonNullList<Ingredient>> map;
         for (Set s : set) {
             for (Object fullStr : s) {
+                List<IRecipe<?>> TEST;
+                map = new HashMap<>();
                 numEntries++;
                 cur = root;
                 splitDom = pattern.split(fullStr.toString(), 2);
                 String str = splitDom[1];
+//                recList = RecipeUtils.getRecipesFromItemName(str);
+                recList = RecipeUtils.getRecipesFromExactItemName(str);
+                if(!recList.isEmpty()) {
+                    System.out.println("BEGIN SINGLE FROM BLOCK/ITEM " + fullStr);
+                    for (IRecipe<?> iRecipe : recList) {
+                        ig = iRecipe.getIngredients();
+                    }
+                }
                 for (int l = 0; l < str.length(); l++) {
                     c = str.charAt(l);
                     if (!cur.hasChild(c)) {
@@ -38,6 +53,7 @@ public class SearchTree {
                             Node child = cachedEdge.getChild();
                             child.toggleEndOfWord();
                             child.setNames(splitDom[1], splitDom[0]);
+                            child.setIngredients(ig);
                         }
                     }
                     cur = cur.getNextNode(c);

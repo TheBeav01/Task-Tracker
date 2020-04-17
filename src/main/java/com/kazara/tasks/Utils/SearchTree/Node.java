@@ -1,8 +1,11 @@
 package com.kazara.tasks.Utils.SearchTree;
 
-import com.kazara.tasks.Utils.RecipeUtils;
-import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 import java.util.Set;
@@ -13,6 +16,9 @@ public class Node {
     private boolean endOfWord = false;
     private String name, domain;
     private ResourceLocation resourceLocation;
+    private NonNullList<Ingredient> ingredients;
+    private static final Logger LOGGER = LogManager.getLogger();
+    private boolean hasDictionaryItems = false;
     public Node() {
         edgeSet = new TreeSet<Edge>();
     }
@@ -90,6 +96,22 @@ public class Node {
 
     public String getFullName() {
         return domain + ":" + name;
+    }
+
+    public void setIngredients(NonNullList<Ingredient> ig) {
+        this.ingredients = ig;
+        setDictionaryFromIngredients();
+    }
+
+    public void setDictionaryFromIngredients() {
+        ItemStack[] list;
+        for (Ingredient ingredient : ingredients) {
+            list = ingredient.getMatchingStacks();
+            if(list.length > 1) {
+                hasDictionaryItems = true;
+                break;
+            }
+        }
     }
 
 }

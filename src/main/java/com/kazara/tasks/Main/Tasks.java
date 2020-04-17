@@ -30,7 +30,7 @@ public class Tasks
 {
     // Directly reference a log4j logger.
     private static final Logger LOGGER = LogManager.getLogger();
-    private final TasksModInstance instance;
+    private static TasksModInstance instance;
     public Tasks() {
         TasksLogger.registerLogger(LOGGER);
 
@@ -54,9 +54,7 @@ public class Tasks
         // some preinit code
         LOGGER.info("Beginning pre-init");
         Registries.setRegistries();
-        if(instance != null) {
-            instance.buildTree();
-        }
+
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {
@@ -96,5 +94,9 @@ public class Tasks
             // register a new block here
             LOGGER.info("HELLO from Register Block");
         }
+    }
+
+    public static TasksModInstance getInstance() {
+        return instance;
     }
 }

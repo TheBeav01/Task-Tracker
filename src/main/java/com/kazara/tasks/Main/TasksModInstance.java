@@ -46,10 +46,5 @@ public class TasksModInstance {
         long time = System.currentTimeMillis() - start;
         TasksLogger.log("Finished building tree. It took " + time  +"ms to build with " + currentTree.getNumEntries() +
                 " entries");
-        TasksLogger.log("Performing test lookup");
-        start = System.currentTimeMillis();
-        currentTree.printKeyset("stripped");
-        time = System.currentTimeMillis() - start;
-        TasksLogger.log("Lookup took " + time + "ms ");
     }
 }
