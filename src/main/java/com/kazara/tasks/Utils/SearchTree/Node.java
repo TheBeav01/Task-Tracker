@@ -114,4 +114,7 @@ public class Node {
         }
     }
 
+    public List<Ingredient> getIngredients() {
+        return ingredients;
+    }
 }

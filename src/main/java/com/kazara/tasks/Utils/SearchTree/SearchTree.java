@@ -2,6 +2,7 @@ package com.kazara.tasks.Utils.SearchTree;
 
 import com.kazara.tasks.Utils.RecipeUtils;
 import com.kazara.tasks.Utils.TasksLogger;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
@@ -113,5 +114,24 @@ public class SearchTree {
 
     public int getNumEntries() {
         return numEntries;
+    }
+    //Just a test
+    public Set<ItemStack> getComponentItemsFromTree(String name) {
+        Node node = searchTreeForNode(name);
+        List<Ingredient> ingList = node.getIngredients();
+        if(ingList == null || ingList.size() == 0) {
+            return new TreeSet<>();
+        }
+        Stack<ItemStack> toSearch = new Stack<>();
+        ItemStack[] stacks = ingList.get(0).getMatchingStacks();
+
+        for (ItemStack stack : stacks) {
+            toSearch.push(stack);
+        }
+        while(!toSearch.isEmpty()) {
+            ItemStack st = toSearch.pop();
+        }
+
+        return null;
     }
 }

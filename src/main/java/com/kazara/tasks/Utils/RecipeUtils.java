@@ -34,4 +34,17 @@ public class RecipeUtils {
                 .getPath().matches(fromWhatItem)).collect(Collectors.toList());
     }
 
+    public Set<ItemStack> getComponentItems(NonNullList<Ingredient> ingredients) {
+        Set<ItemStack> ret = new TreeSet<>();
+        for (Ingredient ingredient : ingredients) {
+            ItemStack[] components = ingredient.getMatchingStacks();
+            for (ItemStack component : components) {
+                ResourceLocation regLoc = component.getItem().getRegistryName();
+                if(regLoc!=null) {
+
+                }
+            }
+        }
+        return null;
+    }
 }
